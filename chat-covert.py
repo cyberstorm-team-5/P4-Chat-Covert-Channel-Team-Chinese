@@ -13,50 +13,18 @@
 #              covert message in stdout as well.
 ################################################################################
 
-import ftplib
-################################################################################
-
-#global var to select mode (0 (7-bit) or 1 (10-bit))
-METHOD = 0
-#global var for the string of the FTP server to connect to
-SERVER = 'www.jeangourd.com'
-#global var for directory within server to retrieve file permissions info from
-DIR = '7'
-
-#data retrieved from server is stored here
-data = []
-
-################################################################################
 
 
-########NOTE: THE BELOW CODE IS FROM PROGRAM 3, LEFT HERE BECAUSE IT MAY HELP FOR
-#####THIS ONE, BUT IF NOT WE CAN DELETE IT FROM HERE
+import socket
+import sys
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ip = 'jeangourd.com'
+port = 31337
 
+s.connect((ip, port))
 
-#append all permissions data in the DIR directory in the server to the data array
-def retrieveData():
-	server.dir(DIR, data.append)
-
-	#loop through each line of data retrieved (1 line/index of the data array)
-	for i in range(len(data)):
-		#remove all but the first 10 characters of each line (only want
-		#the permissions info)
-		data[i] = data[i][0:10]
-		i=i+1
-
-
-
-#####################################MAIN#######################################
-
-#setup connection to server
-server = ftplib.FTP()
-server.connect(SERVER)
-server.login('anonymous')
-
-#retrieve the permissions data from server
-retrieveData()
-#generate the binary string and print the 7-bit ASCII version
-genString()
-
-
-
+data = s.recv(4096)
+while (data.rstrip("\n") != "EOF"):
+	sys.stdout.write(data)
+	sys.stdout.flush()
+s.close
