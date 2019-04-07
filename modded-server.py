@@ -4,7 +4,7 @@ import sys
 import time
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-port = 5553
+port = 5555
 s.bind(('138.47.132.186', port))
 print ('Socket binded to port ', port)
 s.listen(3)
@@ -13,7 +13,7 @@ message = [0,1,1,0,1,0,0,0,0,1,1,0,0,1,0,1,0,1,1,0,1,1,0,0,0,1,1,0,1,1,0,0,0,1,1
 while (True):
 	(clientsocket, address) = s.accept()
 	print ('Got connection from ', address)
-	output = "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"
+	output = "01101000011001010110110001101100011011110111011101101111011100100110110001100100"
 	x = 1
 	c = 0
 	for i in output:
