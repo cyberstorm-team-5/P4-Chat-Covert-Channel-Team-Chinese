@@ -5,7 +5,11 @@ import time
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 port = 5555
+<<<<<<< HEAD
+s.bind(('138.47.151.90', port))
+=======
 s.bind(('138.47.132.186', port))
+>>>>>>> 6b33c07e03c10dfa38682682c29dda1f24153101
 print ('Socket binded to port ', port)
 s.listen(3)
 print ('socket is listening')
