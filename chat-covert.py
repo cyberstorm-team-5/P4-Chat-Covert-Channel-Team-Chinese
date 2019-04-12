@@ -24,9 +24,9 @@ import sys
 DEBUG = False
 #Chris'S SERVER INFO
 #IP = "138.47.151.90"
-PORT = 5555
+PORT = 31337
 #clay 
-IP = "138.47.132.186"
+IP = "jeangourd.com"
 
 #the times that output a 1 or 0 for the covert message, respectively
 TIME_ONE = .1
@@ -61,7 +61,55 @@ def convertASCII(binaryInput, binaryLength, numBits):
 			finalString += chr(num)
 		
 	print("Covert message: {}".format(finalString))
-	
+
+
+#retieve the overt message with timings to get bits for the covert message
+def getCovert(s):
+
+        #hold the binary for the covert message
+        covertBin = ""
+
+        #retrieve the first char outside the loop (only care about timing
+        #between the characters)
+        data = s.recv(4096)
+
+        #continue to loop until an EOF signal is received
+        while (data.rstrip("\n") != "EOF"):
+
+                #display the current character being held
+                sys.stdout.write(data)
+                sys.stdout.flush()
+
+                #time the retrieval of the next character
+                start = time()
+                data = s.recv(4096)
+                end = time()
+
+                #determine what range the time falls into for
+                #adding a 1 or 0 to the covert string
+                delta = round(end-start, 3)
+                if (DEBUG):
+                        print("")
+                        print (delta)
+                #use the average time to account for variations (ex: if time 1 is
+                #".1" and the delay was ".09" it should be a binary 1, but if we
+                #used "delta >= TIME_ONE", we would get a 0)
+                if(delta >= TIME_AVG):
+                        covertBin += "1"
+                else:
+                        covertBin += "0"
+
+
+        print("...\n[disconnect from the chat server]")
+
+        #close out of the server and display the converted output
+        s.close()
+
+        if(DEBUG):
+                print(covertBin)
+        convertASCII(covertBin, len(covertBin), 8)
+
+###############################MAIN#############################################
 
 
 #display the overt message and generate the bits of the covert message based on
@@ -72,54 +120,17 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((IP, PORT))
 print ("[connect to the chat server]\n...")
 
-#hold the binary for the covert message
-covertBin = ""
-
-#retrieve the first char outside the loop (only care about timing
-#between the characters)
-data = s.recv(4096)
-
-#continue to loop until an EOF signal is received
-while (data.rstrip("\n") != "EOF"):
-
-        #display the current character being held
-        sys.stdout.write(data)
-        sys.stdout.flush()
-
-        #time the retrieval of the next character
-        start = time()
-        data = s.recv(4096)
-        end = time()
-
-        #determine what range the time falls into for
-        #adding a 1 or 0 to the covert string
-        delta = round(end-start, 3)
-        if (DEBUG):
-                print("")
-                print (delta)
-        #use the average time to account for variations (ex: if time 1 is
-        #".1" and the delay was ".09" it should be a binary 1, but if we
-        #used "delta >= TIME_ONE", we would get a 0)
-        if(delta >= TIME_AVG):
-                covertBin += "1"
-        else:
-                covertBin += "0"
-
-
-print("...\n[disconnect from the chat server]")
-
-#close out of the server and display the converted output
-s.close()
-
-print(covertBin)
-convertASCII(covertBin, len(covertBin), 8)
-###############################MAIN#############################################
+#go to get the covert message
+getCovert(s)
 
 
 
 
 
-#covertBin = retrieveMessages(s)
+
+
+
+
 
 
 
