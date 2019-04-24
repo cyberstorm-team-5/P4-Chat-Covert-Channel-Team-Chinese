@@ -1,4 +1,4 @@
-id################################################################################
+################################################################################
 # Authors: Team Chinese (Lane Arnold, Christopher Boquet,
 # 	   Christopher Bouton, Darrell Durousseaux, Clay Fonseca,
 #	   Rebecca Grantham, Andrew Maurice)
@@ -16,19 +16,18 @@ id##############################################################################
 from time import time
 import socket
 import sys
+
 ################################################################################
 
-#LANE'S SERVER INFO
-#ip = '138.47.136.187'
-#port = 5553
-DEBUG = False
-#Chris'S SERVER INFO
-#IP = "138.47.151.90"
-PORT = 31337
-#clay 
-IP = "jeangourd.com"
 
-#the times that output a 1 or 0 for the covert message, respectively
+DEBUG = False
+
+#server info
+PORT = 33333
+IP = "138.47.102.201"
+
+#the times that output a 1 or 0 for the covert message, respectively (such that time one
+#is larger than time 0)
 TIME_ONE = .1
 TIME_ZERO = 0.025
 #use average time to account for variation
@@ -107,6 +106,7 @@ def getCovert(s):
 
         if(DEBUG):
                 print(covertBin)
+                
         convertASCII(covertBin, len(covertBin), 8)
 
 ###############################MAIN#############################################
